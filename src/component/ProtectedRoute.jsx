@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { app } from "../config/firebase";
 import Login from "../pages/Login";
-import { useNavigate } from "react-router-dom";
 
 const ProtectedRoute = ({ Component }) => {
     const [user, setUser] = useState(null);
