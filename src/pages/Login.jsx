@@ -1,8 +1,9 @@
 import { getAuth, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { useState } from "react";
 import { app } from "../config/firebase";
-import { Link } from "react-router-dom";
-
+import SignUp from "../component/SignUp";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
 
 const Login = () => {
     const [inputs, setInputs] = useState({
@@ -49,10 +50,9 @@ const Login = () => {
                 <span className="absolute bottom-10 right-10 w-96 h-96 bg-[#1E2A47] rounded-full opacity-40 mix-blend-lighten"></span>
                 <span className="absolute top-1/2 left-1/3 w-56 h-56 bg-[#445D85] rounded-full opacity-20 mix-blend-screen"></span>
             </div>
-
             <div className="relative w-full max-w-5xl mx-auto bg-[#f8f0eb] rounded-3xl shadow-2xl flex flex-col lg:flex-row overflow-hidden">
                 {/* Left side */}
-                <div className="w-full lg:w-7/12 px-6 sm:px-8 py-10 flex flex-col justify-center items-center text-center lg:text-left">
+                <div className="w-full lg:w-7/12 px-6 sm:px-8 py-10 flex flex-col justify-center h-full items-center text-center lg:text-left">
                     <img
                         src="/images/welcome-img.png"
                         alt="welcome illustration"
@@ -62,55 +62,63 @@ const Login = () => {
                         Sign in to continue to your dashboard and manage your T.Vs with ease.
                     </p>
                 </div>
-
                 {/* Right side */}
-                <div className="w-full lg:w-5/12 px-6 sm:px-8 py-10 bg-gradient-to-bl from-[#1a233a] to-[#263150]">
-                    <h2 className="text-white capitalize font-serif text-6xl mb-9">login</h2>
-                    <form onSubmit={handleSubmit} className="flex flex-col space-y-6">
-                        <input
-                            type="email"
-                            name="email"
-                            id="email"
-                            placeholder="📧 Enter your email"
-                            value={inputs.email}
-                            onChange={handleChange}
-                            className="w-full px-5 py-3 rounded-xl border border-gray-400 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-400 text-gray-900 placeholder-gray-500 transition duration-300 ease-in-out"
-                            required
-                            autoComplete="email"
-                        />
-                        <input
-                            type="password"
-                            name="password"
-                            id="password"
-                            placeholder="🔒 Enter your password"
-                            value={inputs.password}
-                            onChange={handleChange}
-                            className="w-full px-5 py-3 rounded-xl border border-gray-400 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-400 text-gray-900 placeholder-gray-500 transition duration-300 ease-in-out"
-                            required
-                            autoComplete="current-password"
-                        />
-                        <button
-                            type="submit"
-                            className="py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-lg shadow-lg transition-colors duration-300 ease-in-out"
-                        >
-                            Login
-                        </button>
-                        <button
-                            type="button"
-                            onClick={signInWithGoogle}
-                            className="flex items-center justify-center gap-3 py-3 rounded-xl border border-gray-400 bg-white hover:bg-gray-100 text-gray-900 font-semibold shadow-md transition-colors duration-300 ease-in-out"
-                        >
-                            <img src="images/google-icon.png" alt="google icon" className="w-6 h-6" />
-                            <span>Continue with Google</span>
-                        </button>
-                    </form>
+                <div className="w-full lg:w-5/12 h-full">
+                    <Swiper className="mySwiper">
+                        <SwiperSlide className="">
+                            <div className="px-6 sm:px-8 py-10 bg-gradient-to-bl h-full from-[#1a233a] to-[#263150]">
+                                <h2 className="text-white capitalize font-serif text-6xl mb-9">login</h2>
+                                <form onSubmit={handleSubmit} className="flex flex-col h-full flex-grow space-y-6">
+                                    <input
+                                        type="email"
+                                        name="email"
+                                        id="email"
+                                        placeholder="📧 Enter your email"
+                                        value={inputs.email}
+                                        onChange={handleChange}
+                                        className="w-full px-5 py-3 rounded-xl border border-gray-400 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-400 text-gray-900 placeholder-gray-500 transition duration-300 ease-in-out"
+                                        required
+                                        autoComplete="email"
+                                    />
+                                    <input
+                                        type="password"
+                                        name="password"
+                                        id="password"
+                                        placeholder="🔒 Enter your password"
+                                        value={inputs.password}
+                                        onChange={handleChange}
+                                        className="w-full px-5 py-3 rounded-xl border border-gray-400 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-400 text-gray-900 placeholder-gray-500 transition duration-300 ease-in-out"
+                                        required
+                                        autoComplete="current-password"
+                                    />
+                                    <button
+                                        type="submit"
+                                        className="py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-lg shadow-lg transition-colors duration-300 ease-in-out"
+                                    >
+                                        Login
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={signInWithGoogle}
+                                        className="flex items-center justify-center gap-3 py-3 rounded-xl border border-gray-400 bg-white hover:bg-gray-100 text-gray-900 font-semibold shadow-md transition-colors duration-300 ease-in-out"
+                                    >
+                                        <img src="images/google-icon.png" alt="google icon" className="w-6 h-6" />
+                                        <span>Continue with Google</span>
+                                    </button>
+                                </form>
 
-                    <p className="mt-9 text-center text-gray-300 tracking-wide">
-                        Don’t have an account?{" "}
-                        <button className="text-indigo-400 font-semibold hover:underline">
-                            Sign up here
-                        </button>
-                    </p>
+                                <p className="mt-9 text-center text-gray-300 tracking-wide">
+                                    Don’t have an account?{" "}
+                                    <button className="text-indigo-400 font-semibold hover:underline">
+                                        Sign up here
+                                    </button>
+                                </p>
+                            </div>
+                        </SwiperSlide>
+                        <SwiperSlide>
+                            <SignUp signUpWithGoogle={signInWithGoogle} />
+                        </SwiperSlide>
+                    </Swiper>
                 </div>
             </div>
         </section>
