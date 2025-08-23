@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom"
-import ProtectedRoute from "./component/ProtectedRoute"
+import ProtectedRoute from "./components/ProtectedRoute"
 import Dashboard from "./pages/Dashboard"
 
 const App = () => {

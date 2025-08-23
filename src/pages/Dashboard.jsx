@@ -1,18 +1,19 @@
-import { getAuth, signOut } from "firebase/auth"
-import { app } from "../config/firebase"
+import { signOut } from "firebase/auth"
+import { auth } from "../config/firebase"
+import Header from "../components/Header"
 
 const Dashboard = () => {
 
-    const auth = getAuth(app)
     const handleLogout = async () => {
         try {
             await signOut(auth)
         } catch (error) {
-
+            console.log(error)
         }
     }
     return (
-        <div>Dashboard
+        <div className="">
+            <Header />
             <br />
             <button onClick={handleLogout}>logout</button>
         </div>

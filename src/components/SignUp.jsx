@@ -1,15 +1,13 @@
 import { useState } from "react";
-import { getAuth, GoogleAuthProvider, createUserWithEmailAndPassword } from "firebase/auth";
-import { app } from "../config/firebase";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../config/firebase";
 
-const SignUp = ({ signUpWithGoogle }) => {
+const SignUp = ({ signUpWithGoogle, goToLogin }) => {
     const [inputs, setInputs] = useState({
         upEmail: "",
         upPassword: "",
         confirmPassword: "",
     });
-
-    const auth = getAuth(app);
 
     const handleChange = (e) => {
         setInputs({
@@ -20,7 +18,7 @@ const SignUp = ({ signUpWithGoogle }) => {
 
     const handleUpSubmit = async (e) => {
         e.preventDefault();
-        if (inputs.password !== inputs.confirmPassword) {
+        if (inputs.upPassword !== inputs.confirmPassword) {
             alert("Passwords do not match!");
             return;
         }
@@ -31,18 +29,18 @@ const SignUp = ({ signUpWithGoogle }) => {
                 inputs.upEmail,
                 inputs.upPassword
             );
-            console.log("✅ User registered:", result.user);
+            console.log(result)
         } catch (error) {
             console.log("❌ Error during sign up:", error);
         }
     };
     return (
-        <div className="px-6 sm:px-8 py-10 bg-gradient-to-bl from-[#1a233a] h-full to-[#263150]">
+        <div>
             <h2 className="text-white capitalize font-serif text-5xl mb-9">
                 Sign Up
             </h2>
 
-            <form onSubmit={handleUpSubmit} className="flex h-full flex-col space-y-6">
+            <form onSubmit={handleUpSubmit} className="space-y-6">
                 {/* Email */}
                 <input
                     type="email"
@@ -89,7 +87,7 @@ const SignUp = ({ signUpWithGoogle }) => {
                 />
                 <button
                     type="submit"
-                    className="py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white 
+                    className="py-3 w-full rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white 
                      font-semibold text-lg shadow-lg transition-colors duration-300 ease-in-out"
                 >
                     Sign Up
@@ -99,7 +97,7 @@ const SignUp = ({ signUpWithGoogle }) => {
                 <button
                     type="button"
                     onClick={signUpWithGoogle}
-                    className="flex items-center justify-center gap-3 py-3 rounded-xl border border-gray-400 
+                    className="flex w-full items-center justify-center gap-3 py-3 rounded-xl border border-gray-400 
                      bg-white hover:bg-gray-100 text-gray-900 font-semibold shadow-md transition-colors 
                      duration-300 ease-in-out"
                 >
@@ -109,7 +107,7 @@ const SignUp = ({ signUpWithGoogle }) => {
             </form>
             <p className="mt-6 text-center text-gray-300 tracking-wide">
                 Already have an account?{" "}
-                <button className="text-indigo-400 font-semibold">
+                <button className="text-indigo-400 font-semibold" onClick={goToLogin}>
                     Login here
                 </button>
             </p>

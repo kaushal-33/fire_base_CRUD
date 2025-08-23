@@ -1,24 +1,23 @@
-import { useEffect, useState } from "react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { createContext, useEffect, useState } from "react"
 import { app } from "../config/firebase";
-import Login from "../pages/Login";
 
-const ProtectedRoute = ({ Component }) => {
+export const AuthStore = createContext(null);
+
+const AuthContext = ({ children }) => {
     const [user, setUser] = useState(null);
     useEffect(() => {
         const auth = getAuth(app);
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             setUser(user);
         });
-        // cleanup
         return () => unsubscribe();
     }, []);
-    if (!user) {
-        return <Login />;
-    }
+    return (
+        <AuthStore.Provider value={{ user, setUser }}>
+            {children}
+        </AuthStore.Provider>
+    )
+}
 
-    // User is authenticated
-    return <Component />;
-};
-
-export default ProtectedRoute;
+export default AuthContext
