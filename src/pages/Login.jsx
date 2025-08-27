@@ -1,11 +1,13 @@
 import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import SignUp from "../components/SignUp";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
 import { auth } from "../config/firebase";
+import toast from "react-hot-toast";
+import { AuthStore } from "../context/AuthContext";
 
 
 const Login = () => {
@@ -13,6 +15,8 @@ const Login = () => {
         email: "",
         password: "",
     });
+
+    const { loading } = useContext(AuthStore);
     const swiperRef = useRef(null);
     const provider = new GoogleAuthProvider()
     const handleChange = (e) => {
@@ -21,25 +25,30 @@ const Login = () => {
             [e.target.name]: e.target.value,
         });
     };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!inputs.email.trim() || !inputs.password.trim()) {
+            toast.error("Fill all the Inputs...!", { position: 'top-right' });
+            return;
+        }
         try {
             const result = await signInWithEmailAndPassword(
                 auth,
                 inputs.email,
                 inputs.password
             );
-            console.log(result)
+            toast.success("Logged in successfully...", { position: 'top-left' })
         } catch (error) {
-            console.log(error);
+
+            if (error.code === 'auth/invalid-credential') toast.error("Invalid credential...!", { position: 'top-right' })
+            else toast.error("Internal error...!", { position: 'top-right' });
         }
     };
 
     const signInWithGoogle = async () => {
         try {
             let result = await signInWithPopup(auth, provider)
-            console.log(result)
+            toast.success("Logged in successfully...", { position: 'top-left' })
         } catch (error) {
             console.log(error)
         }
@@ -55,6 +64,13 @@ const Login = () => {
             swiperRef.current.slideTo(0);
         }
     };
+    if (loading) {
+        return (
+            <section className="flex items-center justify-center min-h-screen bg-gradient-to-tr from-[#1a233a] via-[#263150] to-[#375173]">
+                <div className="text-white font-mono font-semibold text-4xl">🔃Fetching data...</div>
+            </section>
+        );
+    }
 
     return (
         <section className="relative flex items-center justify-center min-h-screen bg-gradient-to-tr from-[#1a233a] via-[#263150] to-[#375173] px-4 sm:px-6">
@@ -64,7 +80,7 @@ const Login = () => {
                 <span className="absolute bottom-10 right-10 w-96 h-96 bg-[#1E2A47] rounded-full opacity-40 mix-blend-lighten"></span>
                 <span className="absolute top-1/2 left-1/3 w-56 h-56 bg-[#445D85] rounded-full opacity-20 mix-blend-screen"></span>
             </div>
-            <div className="relative w-full max-w-5xl mx-auto rounded-3xl overflow-hidden shadow-2xl flex">
+            <div className="relative w-full max-w-5xl mx-auto rounded-3xl overflow-hidden shadow-2xl flex flex-wrap">
                 {/* Left side */}
                 <div className="w-full lg:w-7/12 bg-[#f8f0eb] px-6 sm:px-8 py-10 flex flex-col justify-center h-full items-center text-center lg:text-left">
                     <img
@@ -80,7 +96,7 @@ const Login = () => {
                 <div className="w-full lg:w-5/12 h-full bg-gradient-to-bl from-[#1a233a] to-[#263150]">
                     <Swiper className="mySwiper h-full"
                         freeMode={true}
-                        speed={1500}
+                        speed={1000}
                         modules={[Navigation]}
                         onSwiper={(swiper) => { swiperRef.current = swiper; }}
                         allowTouchMove={false}
@@ -98,7 +114,6 @@ const Login = () => {
                                     onChange={handleChange}
                                     className="w-full px-5 py-3 rounded-xl border border-gray-400 focus:border-indigo-600 
                                         focus:ring-2 focus:ring-indigo-400 text-gray-900 placeholder-gray-500 transition duration-300 ease-in-out"
-                                    required
                                     autoComplete="email"
                                 />
                                 <input
@@ -110,7 +125,6 @@ const Login = () => {
                                     onChange={handleChange}
                                     className="w-full px-5 py-3 rounded-xl border border-gray-400 focus:border-indigo-600
                                         focus:ring-2 focus:ring-indigo-400 text-gray-900 placeholder-gray-500 transition duration-300 ease-in-out"
-                                    required
                                     autoComplete="current-password"
                                 />
                                 <button

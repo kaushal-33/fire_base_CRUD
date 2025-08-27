@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../config/firebase";
+import toast from "react-hot-toast";
 
 const SignUp = ({ signUpWithGoogle, goToLogin }) => {
     const [inputs, setInputs] = useState({
@@ -18,8 +19,12 @@ const SignUp = ({ signUpWithGoogle, goToLogin }) => {
 
     const handleUpSubmit = async (e) => {
         e.preventDefault();
+        if (Object.values(inputs).some(val => val.trim() === '')) {
+            toast.error("Fill all the Inputs...!", { position: 'top-right' });
+            return;
+        }
         if (inputs.upPassword !== inputs.confirmPassword) {
-            alert("Passwords do not match!");
+            toast.error("Password doesn't match...!", { position: 'top-right' });
             return;
         }
 
@@ -29,9 +34,11 @@ const SignUp = ({ signUpWithGoogle, goToLogin }) => {
                 inputs.upEmail,
                 inputs.upPassword
             );
-            console.log(result)
+            toast.success("Account created successfully!", { position: 'top-left' });
         } catch (error) {
-            console.log("❌ Error during sign up:", error);
+            if (error.code === 'auth/weak-password') toast.error("Password should be atleast 6 character...!", { position: 'top-right' })
+            else if (error.code === 'auth/email-already-in-use') toast.error("Email already in use...!", { position: 'top-right' })
+            else toast.error("Internal error...!", { position: 'top-right' });
         }
     };
     return (
@@ -52,7 +59,6 @@ const SignUp = ({ signUpWithGoogle, goToLogin }) => {
                     className="w-full px-5 py-3 rounded-xl border border-gray-400 focus:border-indigo-600 
                      focus:ring-2 focus:ring-indigo-400 text-gray-900 placeholder-gray-500 
                      transition duration-300 ease-in-out"
-                    required
                     autoComplete="email"
                 />
 
@@ -67,7 +73,6 @@ const SignUp = ({ signUpWithGoogle, goToLogin }) => {
                     className="w-full px-5 py-3 rounded-xl border border-gray-400 focus:border-indigo-600 
                      focus:ring-2 focus:ring-indigo-400 text-gray-900 placeholder-gray-500 
                      transition duration-300 ease-in-out"
-                    required
                     autoComplete="new-password"
                 />
 
@@ -82,7 +87,6 @@ const SignUp = ({ signUpWithGoogle, goToLogin }) => {
                     className="w-full px-5 py-3 rounded-xl border border-gray-400 focus:border-indigo-600 
                      focus:ring-2 focus:ring-indigo-400 text-gray-900 placeholder-gray-500 
                      transition duration-300 ease-in-out"
-                    required
                     autoComplete="new-password"
                 />
                 <button
