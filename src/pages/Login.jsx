@@ -47,7 +47,8 @@ const Login = () => {
 
     const signInWithGoogle = async () => {
         try {
-            let result = await signInWithPopup(auth, provider)
+            await signInWithPopup(auth, provider);
+            await auth.currentUser.reload();
             toast.success("Logged in successfully...", { position: 'top-left' })
         } catch (error) {
             console.log(error)

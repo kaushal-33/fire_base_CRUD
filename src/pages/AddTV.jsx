@@ -1,18 +1,19 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import useSpeechToText from "../hooks/useSpeechToText";
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "../config/firebase";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { TVsStore } from "../context/TVsContext";
 
 
 const AddTV = () => {
     // Color palette from the image
-    const bgColor = "#F5E6C5";     // soft beige
-    const cardColor = "#FFF8DC";   // pale yellow
-    const borderColor = "#A87C55"; // brown
-    const buttonColor = "#D46233"; // warm red
-    const accentColor = "#E1BA7E"; // muted yellow
+    const bgColor = "#F5E6C5";
+    const cardColor = "#FFF8DC";
+    const borderColor = "#A87C55";
+    const buttonColor = "#D46233";
+    const accentColor = "#E1BA7E";
 
     const [formData, setFormData] = useState({
         customerName: '',
@@ -32,6 +33,8 @@ const AddTV = () => {
 
     const navigate = useNavigate();
 
+    const { tvData, fetchData, handleUpdate, updateId, setUpdateId } = useContext(TVsStore)
+
     const { text, isListening, startListening, stopListening } = useSpeechToText();
 
     useEffect(() => {
@@ -40,13 +43,19 @@ const AddTV = () => {
         }
     }, [text]);
 
+    useEffect(() => {
+        if (updateId) {
+            let foundTv = tvData.find((tv) => tv.id === updateId)
+            setFormData(foundTv);
+        }
+    }, [])
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setError({ ...error, [name]: "" });
         setFormData({ ...formData, [name]: value });
     };
 
-    // Validation logic
     const validateForm = () => {
         let formErrors = {};
         let isValid = true;
@@ -96,7 +105,6 @@ const AddTV = () => {
 
         try {
             await addDoc(collection(db, "TVs"), { ...formData, date: new Date(), isWorkDone: false, isdelivered: false });
-            toast.success("Request submitted successfully!", { position: "top-center" });
             setFormData({
                 customerName: '',
                 contact: '',
@@ -104,6 +112,8 @@ const AddTV = () => {
                 size: '',
                 problem: '',
             });
+            fetchData();
+            toast.success("Request submitted successfully!", { position: "top-center" });
             navigate("/")
         } catch (error) {
             console.error(error);
@@ -121,13 +131,27 @@ const AddTV = () => {
                 style={{ background: cardColor, border: `2px solid ${borderColor}` }}
             >
                 {/* Image Section */}
-                <div className="md:w-1/2 flex items-center justify-center">
-                    <img
-                        src={"/images/customer-service.png"}
-                        alt="Customer at Service Center"
-                        className="max-w-xs w-full rounded-xl border"
-                        style={{ borderColor: borderColor, borderWidth: 3 }}
-                    />
+                <div className="md:w-1/2 my-auto">
+                    <div className="">
+                        <img
+                            src={"/images/customer-service.png"}
+                            alt="Customer at Service Center"
+                            className="w-full rounded-xl border"
+                            style={{ borderColor: borderColor, borderWidth: 3 }}
+                        />
+                    </div>
+                    <button
+                        onClick={() => navigate("/")}
+                        type="button"
+                        className="w-full mt-5 font-semibold py-2 rounded-xl shadow-lg transition-colors duration-300 ease-in-out"
+                        style={{
+                            background: buttonColor,
+                            color: "#fff",
+                            fontSize: "1.05rem"
+                        }}
+                    >
+                        Dashboard
+                    </button>
                 </div>
                 {/* Form Section */}
                 <div className="md:w-1/2">
@@ -257,18 +281,44 @@ const AddTV = () => {
 
                         {/* Submit Button */}
                         <div className="pt-2">
-                            <button
-                                type="submit"
-                                className="w-full font-semibold py-3 rounded-xl shadow-lg transition-colors duration-300 ease-in-out"
+                            {updateId ? <button
+                                type="button"
+                                onClick={() => {
+                                    if (!validateForm()) {
+                                        toast.error("Please fix the errors before submitting.", { position: "top-right" });
+                                        return;
+                                    }
+                                    handleUpdate(updateId, formData);
+                                    setFormData(
+                                        {
+                                            customerName: '',
+                                            contact: '',
+                                            brand: '',
+                                            size: '',
+                                            problem: '',
+                                        }
+                                    )
+                                    navigate("/")
+                                }}
+                                className="w-full font-semibold py-3 bg-blue-500 rounded-xl shadow-lg transition-colors duration-300 ease-in-out"
                                 style={{
-                                    background: buttonColor,
                                     color: "#fff",
                                     border: `1px solid ${borderColor}`,
                                     fontSize: "1.05rem"
                                 }}
                             >
+                                Update Request
+                            </button> : <button
+                                type="submit"
+                                className="w-full font-semibold py-3 rounded-xl shadow-lg transition-colors duration-300 ease-in-out"
+                                style={{
+                                    background: buttonColor,
+                                    color: "#fff",
+                                    fontSize: "1.05rem"
+                                }}
+                            >
                                 Submit Request
-                            </button>
+                            </button>}
                         </div>
                     </form>
                 </div>

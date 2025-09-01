@@ -28,7 +28,7 @@ const Header = () => {
                         <img src="/images/logo.png" alt="Logo" width={70} />
                     </div>
                     <div className="hidden md:flex">
-                        {user ? (
+                        {user && (
                             <div className="flex items-center gap-3">
                                 <div className="flex flex-col text-right">
                                     <span className="text-gray-800 font-medium text-sm">
@@ -38,6 +38,9 @@ const Header = () => {
                                 </div>
                                 <img
                                     src={user.photoURL || "/images/user.png"}
+                                    onError={(e) => {
+                                        e.currentTarget.src = "/images/user.png"
+                                    }}
                                     alt="Profile"
                                     className="w-10 h-10 rounded-full object-cover border border-gray-300"
                                 />
@@ -48,11 +51,8 @@ const Header = () => {
                                     Logout
                                 </button>
                             </div>
-                        ) : (
-                            <Login />
                         )}
                     </div>
-
                     {/* Mobile Menu Button */}
                     <div className="md:hidden">
                         <button
@@ -72,7 +72,7 @@ const Header = () => {
                 <div className="md:hidden bg-white shadow-md border-t border-gray-200">
                     <div className="px-4 py-3 flex flex-col gap-3">
                         <button className="w-full text-left bg-blue-600 text-white px-4 py-2 rounded-md font-medium hover:bg-blue-700 transition">
-                            ➕ Add New TV
+                            ➕ Add TV
                         </button>
 
                         {user ? (
