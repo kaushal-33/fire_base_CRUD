@@ -3,7 +3,6 @@ import { AuthStore } from "../context/AuthContext";
 import { auth } from "../config/firebase";
 import { signOut } from "firebase/auth";
 import toast from "react-hot-toast";
-import Login from "../pages/Login";
 
 const Header = () => {
     const { user } = useContext(AuthStore);
@@ -13,65 +12,59 @@ const Header = () => {
         try {
             await signOut(auth);
             toast.success("Logged out successfully", { position: "top-left" });
-        } catch (error) {
+        } catch {
             toast.error("Error logging out!", { position: "top-right" });
         }
     };
 
-
     return (
-        <header className="w-full bg-white shadow-md sticky top-0">
-            <div className="container mx-auto px-4">
-                <div className="flex justify-between items-center">
+        <header className="w-full bg-white/80 backdrop-blur-md shadow sticky top-0 z-50 border-b border-[#A77C48]/30">
+            <div className="max-w-7xl mx-auto px-6">
+                <div className="flex justify-between items-center py-3">
                     {/* Logo */}
-                    <div className="">
-                        <img src="/images/logo.png" alt="Logo" width={70} />
+                    <div>
+                        <img src="/images/logo.png" alt="Logo" className="w-16" />
                     </div>
-                    <div className="hidden md:flex">
-                        {user && (
-                            <div className="flex items-center gap-3">
-                                <div className="flex flex-col text-right">
-                                    <span className="text-gray-800 font-medium text-sm">
-                                        {user.displayName || "Anonymous"}
-                                    </span>
-                                    <span className="text-gray-500 text-xs">{user.email}</span>
-                                </div>
-                                <img
-                                    src={user.photoURL || "/images/user.png"}
-                                    onError={(e) => {
-                                        e.currentTarget.src = "/images/user.png"
-                                    }}
-                                    alt="Profile"
-                                    className="w-10 h-10 rounded-full object-cover border border-gray-300"
-                                />
-                                <button
-                                    onClick={handleLogout}
-                                    className="bg-red-500 text-white px-3 py-2 font-semibold rounded-md text-sm hover:bg-red-600 transition"
-                                >
-                                    Logout
-                                </button>
+
+                    {/* Desktop User Info */}
+                    {user && (
+                        <div className="hidden md:flex items-center gap-4">
+                            <div className="text-right">
+                                <div className="font-semibold text-[#37474F]">{user.displayName || "Anonymous"}</div>
+                                <div className="text-xs text-gray-500">{user.email}</div>
                             </div>
-                        )}
-                    </div>
-                    {/* Mobile Menu Button */}
+                            <img
+                                src={user.photoURL || "/images/user.png"}
+                                alt="Profile"
+                                className="w-10 h-10 rounded-full border border-gray-300 object-cover"
+                                onError={(e) => { e.currentTarget.src = "/images/user.png"; }}
+                            />
+                            <button
+                                onClick={handleLogout}
+                                className="bg-[#C62828] text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-red-600 transition"
+                            >
+                                Logout
+                            </button>
+                        </div>
+                    )}
+
+                    {/* Mobile Menu Toggle */}
                     <div className="md:hidden">
                         <button
                             onClick={() => setMenuOpen(!menuOpen)}
-                            className="p-2 rounded-md hover:bg-gray-100 focus:outline-none"
+                            className="p-2 rounded-lg hover:bg-gray-100"
                         >
-                            {
-                                menuOpen ? "×" : "="
-                            }
+                            {menuOpen ? "✖" : "☰"}
                         </button>
                     </div>
                 </div>
             </div>
 
-            {/* Mobile Dropdown Menu */}
+            {/* Mobile Dropdown */}
             {menuOpen && (
-                <div className="md:hidden bg-white shadow-md border-t border-gray-200">
-                    <div className="px-4 py-3 flex flex-col gap-3">
-                        <button className="w-full text-left bg-blue-600 text-white px-4 py-2 rounded-md font-medium hover:bg-blue-700 transition">
+                <div className="md:hidden bg-white border-t border-[#A77C48]/20 shadow">
+                    <div className="px-6 py-4 space-y-3">
+                        <button className="w-full bg-[#1976D2] text-white px-4 py-2 rounded-lg font-medium hover:bg-[#43A047] transition">
                             ➕ Add TV
                         </button>
 
@@ -79,24 +72,24 @@ const Header = () => {
                             <>
                                 <div className="flex items-center gap-3">
                                     <img
-                                        src={user.photoURL || "/images/default-avatar.png"}
+                                        src={user.photoURL || "/images/user.png"}
                                         alt="Profile"
-                                        className="w-10 h-10 rounded-full object-cover border border-gray-300"
+                                        className="w-10 h-10 rounded-full border border-gray-300 object-cover"
                                     />
                                     <div>
-                                        <div className="text-gray-800 font-medium">{user.displayName || "User"}</div>
-                                        <div className="text-gray-500 text-sm">{user.email}</div>
+                                        <div className="font-semibold text-[#37474F]">{user.displayName || "User"}</div>
+                                        <div className="text-sm text-gray-500">{user.email}</div>
                                     </div>
                                 </div>
                                 <button
                                     onClick={handleLogout}
-                                    className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition"
+                                    className="w-full bg-[#C62828] text-white px-4 py-2 rounded-lg font-medium hover:bg-red-600 transition"
                                 >
                                     Logout
                                 </button>
                             </>
                         ) : (
-                            <button className="text-blue-600 font-semibold hover:underline text-left">
+                            <button className="w-full text-[#1976D2] font-semibold hover:underline">
                                 Login
                             </button>
                         )}

@@ -55,7 +55,7 @@ const TVsContext = ({ children }) => {
         let data = tvData.filter(tv => tv.id)
         if (!data) return;
         try {
-            await updateDoc(doc(db, "TVs", id), { isdelivered: true, deliveredAmount: amount });
+            await updateDoc(doc(db, "TVs", id), { isdelivered: true, deliveredAmount: amount, deliveredDate: new Date.now() });
             fetchData();
             toast.success("T.V details updated...!", { position: "top-left" });
         } catch (error) {
