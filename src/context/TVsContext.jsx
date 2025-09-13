@@ -6,7 +6,6 @@ import toast from "react-hot-toast";
 export const TVsStore = createContext();
 
 const TVsContext = ({ children }) => {
-
     const [tvData, setTvData] = useState([]);
     const [updateId, setUpdateId] = useState(null)
     useEffect(() => {
@@ -55,7 +54,7 @@ const TVsContext = ({ children }) => {
         let data = tvData.filter(tv => tv.id)
         if (!data) return;
         try {
-            await updateDoc(doc(db, "TVs", id), { isdelivered: true, deliveredAmount: amount, deliveredDate: new Date.now() });
+            await updateDoc(doc(db, "TVs", id), { isdelivered: true, deliveredAmount: amount, deliveredDate: new Date(), isWorkDone: true });
             fetchData();
             toast.success("T.V details updated...!", { position: "top-left" });
         } catch (error) {

@@ -64,3 +64,26 @@
         opacity: 0.6;
     }
 }
+
+.search::placeholder {
+    text-align: end;
+}
+
+.pop-up {
+    clip-path: polygon(0% 0%, 100% 0%, 100% 75%, 75% 75%, 75% 100%, 50% 75%, 0% 75%);
+    padding-bottom: 30px;
+    transition: .3s all ease-in-out;
+    visibility: hidden;
+    opacity: 0;
+    top: 0;
+    left: 0;
+    transform: scale(0);
+}
+
+.confirm-btn:hover .pop-up {
+    visibility: visible;
+    opacity: 1;
+    left: -5px;
+    top: -50px;
+    transform: scale(1);
+}

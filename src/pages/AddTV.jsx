@@ -32,9 +32,7 @@ const AddTV = () => {
     });
 
     const navigate = useNavigate();
-
-    const { tvData, fetchData, handleUpdate, updateId, setUpdateId } = useContext(TVsStore)
-
+    const { tvData, fetchData, handleUpdate, updateId } = useContext(TVsStore)
     const { text, isListening, startListening, stopListening } = useSpeechToText();
 
     useEffect(() => {
@@ -45,8 +43,7 @@ const AddTV = () => {
 
     useEffect(() => {
         if (updateId) {
-            let foundTv = tvData.find((tv) => tv.id === updateId)
-            setFormData(foundTv);
+            setFormData(updateId);
         }
     }, [])
 
@@ -99,7 +96,7 @@ const AddTV = () => {
         e.preventDefault();
 
         if (!validateForm()) {
-            toast.error("Please fix the errors before submitting.", { position: "top-right" });
+            toast.error("Please fill the form before submitting.", { position: "top-right" });
             return;
         }
 
@@ -156,7 +153,7 @@ const AddTV = () => {
                 {/* Form Section */}
                 <div className="md:w-1/2">
                     <h2 className="text-2xl font-bold mb-6" style={{ color: borderColor }}>
-                        📋 Add TV Service Request
+                        📋 {updateId ? "Update" : "Add"} TV Service Request
                     </h2>
 
                     <form
