@@ -51,7 +51,7 @@ const RecentTv = () => {
                 <Hourglass size={20} className="text-yellow-700" />
                 Most awaited pending TV
             </h3>
-            <div className="text-sm text-gray-700 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+            <div className="text-sm text-gray-700 flex flex-wrap justify-between">
                 <div className="flex items-center gap-2">
                     <User size={16} className="text-gray-500" />
                     <span className="capitalize font-medium">{recentTv.customerName}</span>

@@ -71,7 +71,7 @@
 
 .pop-up {
     clip-path: polygon(0% 0%, 100% 0%, 100% 75%, 75% 75%, 75% 100%, 50% 75%, 0% 75%);
-    padding-bottom: 30px;
+    padding-bottom: 20px;
     transition: .3s all ease-in-out;
     visibility: hidden;
     opacity: 0;

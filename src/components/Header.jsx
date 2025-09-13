@@ -3,6 +3,7 @@ import { AuthStore } from "../context/AuthContext";
 import { auth } from "../config/firebase";
 import { signOut } from "firebase/auth";
 import toast from "react-hot-toast";
+import { PlusCircle } from "lucide-react";
 
 const Header = () => {
     const { user } = useContext(AuthStore);
@@ -18,8 +19,8 @@ const Header = () => {
     };
 
     return (
-        <header className="w-full bg-white/80 backdrop-blur-md shadow sticky top-0 z-50 border-b border-[#A77C48]/30">
-            <div className="max-w-7xl mx-auto px-6">
+        <header className="w-full bg-gray-50 rounded-lg backdrop-blur-md shadow sticky top-0 z-50 border-b border-[#A77C48]/30">
+            <div className="max-w-7xl mx-auto px-2">
                 <div className="flex justify-between items-center py-3">
                     {/* Logo */}
                     <div>
@@ -62,10 +63,10 @@ const Header = () => {
 
             {/* Mobile Dropdown */}
             {menuOpen && (
-                <div className="md:hidden bg-white border-t border-[#A77C48]/20 shadow">
+                <div className="md:hidden transition-all rounded-b-lg bg-gray-50 border-[#A77C48]/20 shadow">
                     <div className="px-6 py-4 space-y-3">
-                        <button className="w-full bg-[#1976D2] text-white px-4 py-2 rounded-lg font-medium hover:bg-[#43A047] transition">
-                            ➕ Add TV
+                        <button className="w-full bg-[#1976D2] text-white flex items-center justify-center px-4 py-2 rounded-lg font-medium hover:bg-[#43A047] transition">
+                            <PlusCircle className="w-4 h-4"/> Add TV
                         </button>
 
                         {user ? (
