@@ -120,7 +120,7 @@ const AddTV = () => {
 
     return (
         <section
-            className="min-h-screen flex items-center justify-center px-4 sm:px-6"
+            className="min-h-screen flex items-center py-4 justify-center px-4 sm:px-6"
             style={{ background: bgColor }}
         >
             <div
@@ -180,7 +180,7 @@ const AddTV = () => {
                                 {/* Speech Button */}
                                 <button
                                     type="button"
-                                    className={`mic-btn absolute top-8 right-2 ${isListening ? "listening" : ""}`}
+                                    className={`mic-btn absolute bottom-[19px] right-2 ${isListening ? "listening" : ""}`}
                                     title="Speech to text"
                                     onClick={() => {
                                         isListening ? stopListening() : startListening();
@@ -280,12 +280,12 @@ const AddTV = () => {
                         <div className="pt-2">
                             {updateId ? <button
                                 type="button"
-                                onClick={() => {
+                                onClick={async () => {
                                     if (!validateForm()) {
                                         toast.error("Please fix the errors before submitting.", { position: "top-right" });
                                         return;
                                     }
-                                    handleUpdate(updateId, formData);
+                                    await handleUpdate(updateId.id, formData);
                                     setFormData(
                                         {
                                             customerName: '',

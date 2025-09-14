@@ -4,6 +4,7 @@ import { auth } from "../config/firebase";
 import { signOut } from "firebase/auth";
 import toast from "react-hot-toast";
 import { PlusCircle } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Header = () => {
     const { user } = useContext(AuthStore);
@@ -65,9 +66,9 @@ const Header = () => {
             {menuOpen && (
                 <div className="md:hidden transition-all rounded-b-lg bg-gray-50 border-[#A77C48]/20 shadow">
                     <div className="px-6 py-4 space-y-3">
-                        <button className="w-full bg-[#1976D2] text-white flex items-center justify-center px-4 py-2 rounded-lg font-medium hover:bg-[#43A047] transition">
-                            <PlusCircle className="w-4 h-4"/> Add TV
-                        </button>
+                        <Link to={"/add-tv"} className="w-full bg-[#1976D2] text-white flex items-center justify-center px-4 py-2 rounded-lg font-medium hover:bg-[#43A047] transition">
+                            <PlusCircle className="w-4 h-4" /> Add TV
+                        </Link>
 
                         {user ? (
                             <>

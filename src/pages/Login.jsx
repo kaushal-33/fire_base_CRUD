@@ -74,7 +74,7 @@ const Login = () => {
     }
 
     return (
-        <section className="relative flex items-center justify-center min-h-screen bg-gradient-to-tr from-[#1a233a] via-[#263150] to-[#375173] px-4 sm:px-6">
+        <section className="relative flex py-4 items-center justify-center min-h-screen bg-gradient-to-tr from-[#1a233a] via-[#263150] to-[#375173] px-4 sm:px-6">
             {/* Background */}
             <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden">
                 <span className="absolute -top-20 -left-20 w-72 h-72 bg-[#537AA6] rounded-full opacity-30 mix-blend-screen"></span>
