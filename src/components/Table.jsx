@@ -119,7 +119,7 @@ const Table = () => {
                                             {tv.isdelivered ? "delivered" : "pending"}
                                         </span>
                                         {tv.deliveredAmount && (
-                                            <div className="text-center absolute rounded-lg pop-up bg-green-300 shadow-lg px-2">
+                                            <div className="text-center absolute z-20 rounded-lg pop-up bg-green-300 shadow-lg px-2">
                                                 <div className="mt-1 text-sm font-semibold text-gray-800 flex justify-center items-center gap-1">
                                                     <IndianRupeeIcon className="w-3 h-3 text-gray-600" />
                                                     <span>{Number(tv.deliveredAmount).toLocaleString()}</span>
